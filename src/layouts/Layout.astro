@@ -1,5 +1,5 @@
 ---
-
+import Analytics from "@vercel/analytics/astro";
 ---
 
 <html lang="en">
@@ -16,6 +16,7 @@
     >
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <slot />
+        <Analytics />
       </div>
     </div>
   </body>
