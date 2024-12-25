@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { supabase } from "../lib/supabase";
+import StreamGrid from "./react/StreamGrid";
+const { data, error } = await supabase.from("live").select("*");
+---
+
+<Layout>
+  <main>
+    <StreamGrid events={data ?? []} client:load />
+  </main>
+</Layout>

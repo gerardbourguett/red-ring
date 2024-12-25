@@ -1,0 +1,52 @@
+---
+import { Button } from "@nextui-org/react";
+import TimeProgress from "./react/TimeProgress";
+import Footer from "./Footer.astro";
+import { CURRENT_YEAR } from "../data/constants";
+import Map from "./Map.astro";
+---
+
+<main
+  class="flex min-h-[calc(100vh-4rem)] flex-col items-center justify-center space-y-12"
+>
+  <Map />
+  <div class="text-center space-y-16">
+    <h1 class="text-6xl md:text-8xl font-medium tracking-tighter">
+      #{CURRENT_YEAR + 1}<span class="text-red-500">Live</span>
+    </h1>
+
+    <div class="w-full max-w-lg mx-auto px-4">
+      <TimeProgress client:load />
+    </div>
+
+    <div class="flex flex-col items-center gap-8">
+      <div class="flex flex-wrap justify-center gap-4">
+        <Button
+          color="danger"
+          variant="bordered"
+          className="text-lg hover:scale-105 transition-transform"
+        >
+          <a href="/live">#RoadTo{CURRENT_YEAR + 1}</a>
+        </Button>
+        <Button
+          color="danger"
+          variant="bordered"
+          className="text-lg hover:scale-105 transition-transform"
+        >
+          <a href="/watch">Live Streams</a>
+        </Button>
+      </div>
+
+      <Button
+        color="danger"
+        variant="shadow"
+        size="lg"
+        className="text-xl hover:scale-105 transition-transform"
+        isLoading
+      >
+        <a href="/chao2024">Dec 31, {CURRENT_YEAR} 10:00 UTC</a>
+      </Button>
+    </div>
+  </div>
+  <Footer />
+</main>
