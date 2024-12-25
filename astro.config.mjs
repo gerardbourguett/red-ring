@@ -5,10 +5,19 @@ import tailwind from '@astrojs/tailwind';
 
 import react from '@astrojs/react';
 
+import vercel from '@astrojs/vercel';
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), react({
       include: ['**/react/*'], experimentalReactChildren: true
     })],
-    output: 'server'
+
+  output: 'server',
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+    isr: true
+  })
 });
