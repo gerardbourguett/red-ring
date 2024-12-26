@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, Divider } from "@nextui-org/react";
+import ReactPlayer from "react-player";
 
 interface Stream {
   id: number;
@@ -21,7 +22,7 @@ const StreamGrid = ({ events }: Props) => {
 
     const interval = setInterval(() => {
       setStreams(events);
-    }, 10000);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [events]);
@@ -33,7 +34,7 @@ const StreamGrid = ({ events }: Props) => {
       </h1>
 
       {streams.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-screen-xl mx-auto">
           {streams.map((stream) => (
             <Card
               key={stream.id}
@@ -53,16 +54,14 @@ const StreamGrid = ({ events }: Props) => {
 
               <Divider className="my-4 bg-zinc-800" />
 
-              <CardBody className="overflow-visible p-0">
-                <div className="relative pt-[56.25%]">
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full rounded-b-lg"
-                    src={stream.link}
-                    title={stream.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    sandbox="allow-scripts allow-same-origin allow-presentation"
+              <CardBody className="overflow-hidden p-0">
+                <div className="relative h-[200px] md:h-[300px] lg:h-[400px]">
+                  <ReactPlayer
+                    url={stream.link}
+                    width="100%"
+                    height="100%"
+                    playing
+                    className="absolute top-0 left-0"
                   />
                 </div>
               </CardBody>
