@@ -29,49 +29,51 @@ const StreamGrid = ({ events }: Props) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-white mb-8 text-center">
+      <h1 className="text-5xl md:text-6xl font-bold text-white mb-12 text-center tracking-tight">
         Live Streams
       </h1>
 
       {streams.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-screen-xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-screen-xl mx-auto">
           {streams.map((stream) => (
-            <Card
+            <div
               key={stream.id}
-              className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800"
+              className="relative bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 rounded-2xl overflow-hidden backdrop-blur-sm border border-zinc-800/50 group hover:border-zinc-700/50 transition-all duration-300"
             >
-              <CardHeader className="flex flex-col gap-1 px-4 pt-4">
-                <div className="flex items-center justify-between w-full">
-                  <h2 className="text-xl font-semibold text-white">
+              <div className="absolute top-4 right-4 z-10">
+                <span className="px-3 py-1 text-xs font-semibold bg-red-500 text-white rounded-full animate-pulse">
+                  LIVE
+                </span>
+              </div>
+
+              <div className="p-4 pb-0">
+                <div className="space-y-1 mb-4">
+                  <h2 className="text-xl font-semibold text-white flex items-center gap-2">
                     {stream.country}
                   </h2>
-                  <span className="px-2 py-1 text-xs bg-red-500 text-white rounded-full">
-                    LIVE
-                  </span>
+                  <p className="text-zinc-400 text-sm line-clamp-1">
+                    {stream.title}
+                  </p>
                 </div>
-                <p className="text-zinc-400 text-sm">{stream.title}</p>
-              </CardHeader>
+              </div>
 
-              <Divider className="my-4 bg-zinc-800" />
-
-              <CardBody className="overflow-hidden p-0">
-                <div className="relative h-[200px] md:h-[300px] lg:h-[400px]">
-                  <ReactPlayer
-                    url={stream.link}
-                    width="100%"
-                    height="100%"
-                    playing
-                    className="absolute top-0 left-0"
-                  />
-                </div>
-              </CardBody>
-            </Card>
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                <ReactPlayer
+                  url={stream.link}
+                  width="100%"
+                  height="100%"
+                  playing
+                  controls
+                  className="absolute top-0 left-0"
+                />
+              </div>
+            </div>
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center min-h-[400px] bg-zinc-900/50 backdrop-blur-sm rounded-xl border border-zinc-800">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4" />
-          <p className="text-zinc-400">Loading streams...</p>
+        <div className="flex flex-col items-center justify-center min-h-[400px] bg-gradient-to-b from-zinc-900/50 to-zinc-950/50 rounded-2xl border border-zinc-800/50">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-red-500 mb-4" />
+          <p className="text-zinc-400 font-medium">Loading streams...</p>
         </div>
       )}
     </div>

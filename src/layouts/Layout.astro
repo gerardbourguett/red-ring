@@ -1,17 +1,29 @@
 ---
+const { title } = Astro.props;
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <title>New Year Countdown</title>
-  </head>
+    <title>{title}</title><script>
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script></head
+  >
+
   <body>
     <div
       class="min-h-screen bg-gradient-to-b from-black to-zinc-900 text-white antialiased"
@@ -23,17 +35,17 @@ import SpeedInsights from "@vercel/speed-insights/astro";
       </div>
     </div>
   </body>
+
+  <style is:global>
+    html {
+      background: black;
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+  </style>
 </html>
-
-<style is:global>
-  html {
-    background: black;
-    scrollbar-gutter: stable;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-  }
-</style>

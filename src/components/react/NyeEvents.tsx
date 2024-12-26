@@ -19,34 +19,64 @@ interface Props {
   events: Event[];
 }
 
+const DigitalClockSegment = ({ value }: { value: string }) => (
+  <div className="bg-zinc-800 px-4 py-2 rounded-lg border border-zinc-700">
+    <span className="font-mono text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+      {value}
+    </span>
+  </div>
+);
+
 const NyeEvents = ({ events }: Props) => {
-  const [localTime, setLocalTime] = useState<string>("");
+  const [timeSegments, setTimeSegments] = useState({
+    date: "",
+    time: "",
+    timezone: "",
+  });
   const [closest, setClosest] = useState<Event[]>([]);
   const [nextGroup, setNextGroup] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentTimezone, setCurrentTimezone] = useState<string>("");
 
   useEffect(() => {
     const fetchAndFilterData = async () => {
-      const currentUTC = Math.floor(new Date().getTime() / 1000);
+      const currentUTC = new Date();
 
-      const targetDate = new Date();
-      targetDate.setUTCDate(targetDate.getUTCDate() + 1); // Día siguiente
-      targetDate.setUTCHours(0, 0, 0, 0); // Medianoche UTC
+      const targetDate = new Date(currentUTC);
+      targetDate.setMonth(11);
+      targetDate.setDate(31);
+      targetDate.setHours(0, 0, 0, 0);
+
+      const currentTimestamp = Math.floor(currentUTC.getTime() / 1000);
       const targetTimestamp = Math.floor(targetDate.getTime() / 1000);
 
       const dataWithDifference = events.map((row) => {
-        const localTimestamp = currentUTC + row.gmt_offset;
-        const secondsToTarget = targetTimestamp - localTimestamp;
+        const localTimestamp = currentTimestamp + row.gmt_offset;
+        const localDate = new Date(localTimestamp * 1000);
+
+        const nextNYE = new Date(targetDate);
+        nextNYE.setSeconds(nextNYE.getSeconds() - row.gmt_offset);
+
+        let secondsToTarget =
+          Math.floor(nextNYE.getTime() / 1000) - currentTimestamp;
+
+        if (secondsToTarget < 0) {
+          nextNYE.setFullYear(nextNYE.getFullYear() + 1);
+          secondsToTarget =
+            Math.floor(nextNYE.getTime() / 1000) - currentTimestamp;
+        }
+
         return { ...row, secondsToTarget };
       });
 
-      const sortedData = dataWithDifference
-        .filter((row) => row.secondsToTarget > 0)
-        .sort((a, b) => a.secondsToTarget - b.secondsToTarget);
+      const sortedData = dataWithDifference.sort(
+        (a, b) => a.secondsToTarget - b.secondsToTarget
+      );
 
       const closestGroup = sortedData.filter(
         (row) => row.secondsToTarget === sortedData[0].secondsToTarget
       );
+
       const nextGroup = sortedData.filter(
         (row) =>
           row.secondsToTarget > sortedData[0].secondsToTarget &&
@@ -66,7 +96,7 @@ const NyeEvents = ({ events }: Props) => {
 
       if (closestGroup.length > 0) {
         const firstItem = closestGroup[0];
-        const localTimestamp = currentUTC + firstItem.gmt_offset;
+        const localTimestamp = currentTimestamp + firstItem.gmt_offset;
         const localDate = new Date(localTimestamp * 1000);
 
         const year = localDate.getUTCFullYear();
@@ -78,18 +108,21 @@ const NyeEvents = ({ events }: Props) => {
 
         const gmtOffsetHours = firstItem.gmt_offset / 3600;
         const gmtSign = gmtOffsetHours >= 0 ? "+" : "-";
+        const timezone = `GMT${gmtSign}${Math.abs(gmtOffsetHours)}`;
 
-        const formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} GMT${gmtSign}${Math.abs(
-          gmtOffsetHours
-        )}`;
-        setLocalTime(formattedTime);
+        setTimeSegments({
+          date: `${year}-${month}-${day}`,
+          time: `${hours}:${minutes}:${seconds}`,
+          timezone: timezone,
+        });
+        setCurrentTimezone(timezone);
       }
     };
 
     fetchAndFilterData();
     const interval = setInterval(fetchAndFilterData, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [events]);
 
   const renderCards = (data: Event[]) => {
     return data.map((item, index) => (
@@ -135,18 +168,20 @@ const NyeEvents = ({ events }: Props) => {
 
   return (
     <div className="space-y-12">
-      {/* Reloj Global */}
       <div className="text-center bg-gradient-to-b from-zinc-900 to-zinc-950 p-8 rounded-2xl border border-zinc-800">
-        <div className="space-y-2">
+        <div className="space-y-4">
           <p className="text-zinc-400 uppercase tracking-wider text-sm">
             Current Timezone Time
           </p>
-          <p className="text-5xl md:text-6xl font-bold text-red-500 font-mono">
-            {localTime}
-          </p>
+          <div className="flex flex-col items-center gap-4">
+            <DigitalClockSegment value={timeSegments.date} />
+            <div className="flex items-center gap-2">
+              <DigitalClockSegment value={timeSegments.time} />
+              <DigitalClockSegment value={timeSegments.timezone} />
+            </div>
+          </div>
         </div>
       </div>
-      {/* Sección de husos horarios */}
       <div className="space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-3xl md:text-4xl font-bold text-white">
@@ -159,7 +194,7 @@ const NyeEvents = ({ events }: Props) => {
       </div>
       <div className="space-y-6">
         <h3 className="text-2xl font-semibold text-red-500">
-          Closest to Midnight
+          Closest to Midnight ({currentTimezone})
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {renderCards(closest)}
