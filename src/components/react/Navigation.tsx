@@ -18,6 +18,7 @@ const Navigation = () => {
 
   const menuItems = [
     { label: "#RoadTo2025", href: "/live" },
+    { label: "#RoadTo2025", href: "/live" },
     { label: "LiveStreams", href: "/watch" },
     { label: "#Chao2024", href: "/chao2024" },
   ];

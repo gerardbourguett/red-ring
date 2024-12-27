@@ -22,23 +22,6 @@ const WorldMap = ({ events }: Props) => {
   const svgContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const loadSvg = async () => {
-      try {
-        const response = await fetch("/world.svg");
-        const svgText = await response.text();
-
-        if (svgContainerRef.current) {
-          svgContainerRef.current.innerHTML = svgText;
-        }
-      } catch (error) {
-        console.error("Error loading SVG:", error);
-      }
-    };
-
-    loadSvg();
-  }, []);
-
-  useEffect(() => {
     const updatePaths = async () => {
       const currentUTC = Math.floor(new Date().getTime() / 1000);
 

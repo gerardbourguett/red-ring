@@ -1,34 +1,54 @@
 ---
-import { Calendar, Github, Globe2, Twitch, Twitter } from "lucide-astro";
-
-const year = new Date().getFullYear();
+import {
+  Calendar,
+  Coffee,
+  Github,
+  Globe2,
+  Twitch,
+  Twitter,
+} from "lucide-astro";
+import { CURRENT_YEAR } from "../data/constants";
 ---
 
-<footer class="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-  <a
-    class="flex items-center gap-2 hover:underline hover:underline-offset-4"
-    href="https://github.com/gerardbourguett"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <Github size={16} />
-    Repository
-  </a>
-  <a
-    class="flex items-center gap-2 hover:underline hover:underline-offset-4"
-    href="https://www.twitch.tv/vanderfondi"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <Twitch size={16} />
-    Twitch
-  </a>
-  <a
-    class="flex items-center gap-2 hover:underline hover:underline-offset-4"
-    href="https://www.twitter.com/vanderfondi"
-    rel="noopener noreferrer"
-  >
-    <Twitter size={16} />
-    Twitter
-  </a>
+<footer class="">
+  <div class="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+    <a
+      class="flex items-center gap-2 hover:underline hover:underline-offset-4"
+      href="https://github.com/gerardbourguett"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Github size={16} />
+      Repository
+    </a>
+
+    <a
+      class="flex items-center gap-2 hover:underline hover:underline-offset-4"
+      href="https://ko-fi.com/vanderfondi"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Coffee size={16} />Give me a coffee
+    </a>
+    <a
+      class="flex items-center gap-2 hover:underline hover:underline-offset-4"
+      href="https://www.twitch.tv/vanderfondi"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Twitch size={16} />
+      Twitch
+    </a>
+    <a
+      class="flex items-center gap-2 hover:underline hover:underline-offset-4"
+      href="https://www.twitter.com/vanderfondi"
+      rel="noopener noreferrer"
+    >
+      <Twitter size={16} />
+      Twitter
+    </a>
+  </div>
+  <div class="flex items-center justify-center mt-4 text-sm text-gray-500">
+    <p>© {CURRENT_YEAR} VanderFondi. All rights reserved.</p>
+  </div>
 </footer>

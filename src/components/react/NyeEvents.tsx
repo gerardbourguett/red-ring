@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { Badge, Button, Chip, Divider, Image, Link, Progress } from "@nextui-org/react";
+import {
+  Badge,
+  Button,
+  Chip,
+  Divider,
+  Image,
+  Link,
+  Progress,
+} from "@nextui-org/react";
 import { Globe, MapPin } from "lucide-react"; // Faltaba importar los iconos
 
 interface Event {
@@ -13,6 +21,9 @@ interface Event {
   active: boolean;
   stream: string;
   svg_path: string;
+  location: string;
+  lat: number;
+  lng: number;
 }
 
 interface Props {
@@ -30,6 +41,11 @@ const EventCard = ({ event }: { event: Event }) => {
   const gmtOffset = `GMT${event.gmt_offset >= 0 ? "+" : ""}${
     event.gmt_offset / 3600
   }`;
+
+  // Convertir el campo location de POSTGIS a coordenadas
+  const coordinates = event.location ? {} : null;
+
+  console.log(coordinates);
 
   return (
     <Card
@@ -53,11 +69,11 @@ const EventCard = ({ event }: { event: Event }) => {
         </div>
       </CardHeader>
       <CardBody className="py-0">
-        <Image
+        {/* <Image
           alt={`Scenery of ${event.city || event.country_name}`}
           src={`/api/placeholder/400/200`}
           className="object-cover rounded-xl h-48 w-full"
-        />
+        /> */}
       </CardBody>
       <CardFooter className="flex flex-col gap-3">
         <div className="flex items-center justify-between w-full">
@@ -68,7 +84,7 @@ const EventCard = ({ event }: { event: Event }) => {
             </span>
           </div>
           <Chip className="bg-gradient-to-r from-red-500 to-red-600" size="sm">
-            {event.active ? "Live Now" : "Coming Soon"}
+            {event.stream ? "Live Now" : "Coming Soon"}
           </Chip>
         </div>
         {event.stream && (
@@ -171,7 +187,7 @@ const NyeEvents = ({ events }: Props) => {
           hours,
           minutes,
           seconds,
-          date: localDate.toISOString().split('T')[0],
+          date: localDate.toISOString().split("T")[0],
           time: `${hours}:${minutes}:${seconds}`,
           timezone,
         });
@@ -196,7 +212,8 @@ const NyeEvents = ({ events }: Props) => {
             New Year's Eve Around the World
           </h1>
           <p className="text-zinc-400 max-w-2xl mx-auto">
-            Follow the New Year celebrations as they happen across different time zones
+            Follow the New Year celebrations as they happen across different
+            time zones
           </p>
           <div className="flex justify-center gap-4">
             <TimeDisplay value={timeSegments.hours} label="HOURS" />
@@ -209,7 +226,7 @@ const NyeEvents = ({ events }: Props) => {
       <section className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-semibold text-white">
-            Currently Celebrating
+            Approaching New Year's Eve
           </h2>
           <Progress
             size="sm"
