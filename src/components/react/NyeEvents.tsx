@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import CountryFlag from "react-country-flag";
-import { Badge, Button, Divider, Image, Link } from "@nextui-org/react";
+import { Badge, Button, Chip, Divider, Image, Link, Progress } from "@nextui-org/react";
+import { Globe, MapPin } from "lucide-react"; // Faltaba importar los iconos
 
 interface Event {
   id: number;
@@ -19,16 +19,76 @@ interface Props {
   events: Event[];
 }
 
-const DigitalClockSegment = ({ value }: { value: string }) => (
-  <div className="dark:bg-zinc-800 bg-zinc-200 px-4 py-2 rounded-lg border dark:border-zinc-700 border-zinc-300">
-    <span className="font-mono text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-      {value}
-    </span>
+const TimeDisplay = ({ value, label }: { value: string; label: string }) => (
+  <div className="flex flex-col items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-800 p-3 rounded-xl">
+    <span className="font-mono text-3xl font-bold text-white">{value}</span>
+    <span className="text-xs text-zinc-400 mt-1">{label}</span>
   </div>
 );
 
+const EventCard = ({ event }: { event: Event }) => {
+  const gmtOffset = `GMT${event.gmt_offset >= 0 ? "+" : ""}${
+    event.gmt_offset / 3600
+  }`;
+
+  return (
+    <Card
+      className="border-none bg-gradient-to-br from-zinc-900/50 to-zinc-900"
+      radius="lg"
+    >
+      <CardHeader className="flex gap-3">
+        <Image
+          alt={`Flag of ${event.country_name}`}
+          src={`/flags/1x1/${event.country_code.toLowerCase()}.svg`}
+          className="rounded-full w-12 h-12 object-cover"
+        />
+        <div className="flex flex-col">
+          <p className="text-lg font-semibold text-white">
+            {event.country_name}
+          </p>
+          <div className="flex items-center gap-2 text-sm text-zinc-400">
+            <Globe className="w-4 h-4" />
+            <span>{gmtOffset}</span>
+          </div>
+        </div>
+      </CardHeader>
+      <CardBody className="py-0">
+        <Image
+          alt={`Scenery of ${event.city || event.country_name}`}
+          src={`/api/placeholder/400/200`}
+          className="object-cover rounded-xl h-48 w-full"
+        />
+      </CardBody>
+      <CardFooter className="flex flex-col gap-3">
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-red-500" />
+            <span className="text-sm font-medium text-zinc-300">
+              {event.city || "Capital City"}
+            </span>
+          </div>
+          <Chip className="bg-gradient-to-r from-red-500 to-red-600" size="sm">
+            {event.active ? "Live Now" : "Coming Soon"}
+          </Chip>
+        </div>
+        {event.stream && (
+          <Button
+            className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white"
+            size="sm"
+          >
+            Watch Celebration
+          </Button>
+        )}
+      </CardFooter>
+    </Card>
+  );
+};
+
 const NyeEvents = ({ events }: Props) => {
   const [timeSegments, setTimeSegments] = useState({
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
     date: "",
     time: "",
     timezone: "",
@@ -48,7 +108,6 @@ const NyeEvents = ({ events }: Props) => {
       targetDate.setHours(0, 0, 0, 0);
 
       const currentTimestamp = Math.floor(currentUTC.getTime() / 1000);
-      const targetTimestamp = Math.floor(targetDate.getTime() / 1000);
 
       const dataWithDifference = events.map((row) => {
         const localTimestamp = currentTimestamp + row.gmt_offset;
@@ -99,9 +158,7 @@ const NyeEvents = ({ events }: Props) => {
         const localTimestamp = currentTimestamp + firstItem.gmt_offset;
         const localDate = new Date(localTimestamp * 1000);
 
-        const year = localDate.getUTCFullYear();
-        const month = (localDate.getUTCMonth() + 1).toString().padStart(2, "0");
-        const day = localDate.getUTCDate().toString().padStart(2, "0");
+        // Formatear las horas, minutos y segundos para el display
         const hours = localDate.getUTCHours().toString().padStart(2, "0");
         const minutes = localDate.getUTCMinutes().toString().padStart(2, "0");
         const seconds = localDate.getUTCSeconds().toString().padStart(2, "0");
@@ -111,9 +168,12 @@ const NyeEvents = ({ events }: Props) => {
         const timezone = `GMT${gmtSign}${Math.abs(gmtOffsetHours)}`;
 
         setTimeSegments({
-          date: `${year}-${month}-${day}`,
+          hours,
+          minutes,
+          seconds,
+          date: localDate.toISOString().split('T')[0],
           time: `${hours}:${minutes}:${seconds}`,
-          timezone: timezone,
+          timezone,
         });
         setCurrentTimezone(timezone);
       }
@@ -124,69 +184,62 @@ const NyeEvents = ({ events }: Props) => {
     return () => clearInterval(interval);
   }, [events]);
 
-  const renderCards = (data: Event[]) => {
-    return data.map((item, index) => (
-      <Card isFooterBlurred key={index} className="border-none" radius="lg">
-        <div className="relative">
-          <Image
-            alt={`Flag of ${item.country_name}`}
-            src={`/flags/1x1/${item.country_code.toLowerCase()}.svg`}
-            width={380}
-            className="object-cover"
-          />
-        </div>
-        <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-          <p className="text-sm font-medium text-white">
-            {item.country_name.toUpperCase()}
-          </p>
-          <p className="text-xs italic text-gray-300 bg-black/30 rounded px-2 py-1">
-            {item.city || "City not available"}
-          </p>
-        </CardFooter>
-      </Card>
-    ));
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="space-y-12">
-      <div className="text-center  dark:bg-gradient-to-b dark:from-zinc-900 dark:to-zinc-950 bg-gradient-to-b from-zinc-50 to-zinc-100 p-8 rounded-2xl border border-zinc-800">
-        <div className="space-y-4">
-          <p className="dark:text-zinc-400 text-zinc-600 uppercase tracking-wider text-sm">
-            Current Timezone Time
+    <div className="space-y-8 p-4 max-w-7xl mx-auto">
+      <div className="bg-gradient-to-br from-zinc-900 to-black p-8 rounded-2xl border border-zinc-800">
+        <div className="text-center space-y-6">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            New Year's Eve Around the World
+          </h1>
+          <p className="text-zinc-400 max-w-2xl mx-auto">
+            Follow the New Year celebrations as they happen across different time zones
           </p>
-          <div className="flex flex-col items-center gap-4">
-            <DigitalClockSegment value={timeSegments.date} />
-            <div className="flex items-center gap-2">
-              <DigitalClockSegment value={timeSegments.time} />
-              {/* <DigitalClockSegment value={timeSegments.timezone} /> */}
-            </div>
+          <div className="flex justify-center gap-4">
+            <TimeDisplay value={timeSegments.hours} label="HOURS" />
+            <TimeDisplay value={timeSegments.minutes} label="MINUTES" />
+            <TimeDisplay value={timeSegments.seconds} label="SECONDS" />
           </div>
         </div>
       </div>
-      <div className="space-y-8">
-        <div className="text-center space-y-2">
-          <h2 className="text-3xl md:text-4xl font-bold dark:text-white">
-            Next Timezones Celebrating New Year's Eve
+
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-semibold text-white">
+            Currently Celebrating
           </h2>
-          <p className="dark:text-zinc-400 text-zinc-600">
-            Stay tuned for celebrations around the world
-          </p>
+          <Progress
+            size="sm"
+            radius="full"
+            value={40}
+            classNames={{
+              indicator: "bg-gradient-to-r from-red-500 to-red-600",
+              track: "bg-zinc-800",
+            }}
+            className="w-32"
+          />
         </div>
-      </div>
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-red-500">
-          Closest to New Year ({currentTimezone})
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {renderCards(closest)}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {closest.map((event, index) => (
+            <EventCard key={index} event={event} />
+          ))}
         </div>
-      </div>
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-red-500">Next Up</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {renderCards(nextGroup)}
+      </section>
+
+      <section className="space-y-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-semibold text-white">Up Next</h2>
+          <Divider className="flex-grow" />
         </div>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {nextGroup.map((event, index) => (
+            <EventCard key={index} event={event} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

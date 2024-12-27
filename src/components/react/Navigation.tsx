@@ -39,26 +39,35 @@ const Navigation = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
+
+      {/* Desktop Menu */}
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map(({ label, href }, index) => (
-          <NavbarItem key={index} isActive={index === 0}>
-            <Link color="foreground" href={href}>
+          <NavbarItem key={`desktop-${index}`}>
+            <Link
+              color={index === 0 ? "primary" : "foreground"}
+              href={href}
+              size="lg"
+            >
               {label}
             </Link>
           </NavbarItem>
         ))}
       </NavbarContent>
+
       <NavbarContent justify="end">
         <NavbarItem>
           <ModeToggle />
         </NavbarItem>
       </NavbarContent>
+
+      {/* Mobile Menu */}
       <NavbarMenu>
         {menuItems.map(({ label, href }, index) => (
-          <NavbarMenuItem key={index}>
+          <NavbarMenuItem key={`mobile-${index}`}>
             <Link
               className="w-full"
-              color={index === 2 ? "primary" : "foreground"}
+              color={index === 0 ? "primary" : "foreground"}
               href={href}
               size="lg"
             >
