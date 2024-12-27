@@ -3,9 +3,11 @@ import { Button } from "@nextui-org/react";
 import Countdown from "../components/react/Countdown";
 import Layout from "../layouts/Layout.astro";
 import { CURRENT_YEAR } from "../data/constants";
+import Header from "../components/Header.astro";
 ---
 
 <Layout title="Bye Bye 2024">
+  <Header />
   <main class="min-h-screen flex items-center justify-center">
     <div class="text-center space-y-12 px-4 animate-fade-in">
       <h1 class="text-6xl md:text-8xl font-medium tracking-tighter">

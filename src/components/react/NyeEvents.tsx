@@ -20,7 +20,7 @@ interface Props {
 }
 
 const DigitalClockSegment = ({ value }: { value: string }) => (
-  <div className="bg-zinc-800 px-4 py-2 rounded-lg border border-zinc-700">
+  <div className="dark:bg-zinc-800 bg-zinc-200 px-4 py-2 rounded-lg border dark:border-zinc-700 border-zinc-300">
     <span className="font-mono text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
       {value}
     </span>
@@ -128,20 +128,20 @@ const NyeEvents = ({ events }: Props) => {
     return data.map((item, index) => (
       <Card
         key={index}
-        className="bg-zinc-900/50 border border-zinc-800 backdrop-blur-sm hover:bg-zinc-900/80 transition-all duration-300"
+        className="dark:bg-zinc-900/50 bg-zinc-100/50 border dark:border-zinc-800 border-zinc-200 backdrop-blur-sm dark:hover:bg-zinc-900/80 hover:bg-zinc-100/80 transition-all duration-300"
       >
         <CardHeader className="flex justify-center p-6">
           <CountryFlag
             countryCode={item.country_code}
             svg
-            style={{ fontSize: 64 }}
+            style={{ fontSize: 128 }}
             title={item.country_name}
             alt={item.country_name}
           />
         </CardHeader>
         <Divider className="bg-zinc-800" />
-        <CardBody className="text-center p-4">
-          <p className="text-lg font-semibold text-white mb-1">
+        <CardBody className="text-center">
+          <p className="text-lg font-semibold dark:text-white mb-1 uppercase">
             {item.country_name}
           </p>
           <p className="text-zinc-400">{item.city}</p>
@@ -168,35 +168,35 @@ const NyeEvents = ({ events }: Props) => {
 
   return (
     <div className="space-y-12">
-      <div className="text-center bg-gradient-to-b from-zinc-900 to-zinc-950 p-8 rounded-2xl border border-zinc-800">
+      <div className="text-center  dark:bg-gradient-to-b dark:from-zinc-900 dark:to-zinc-950 bg-gradient-to-b from-zinc-50 to-zinc-100 p-8 rounded-2xl border border-zinc-800">
         <div className="space-y-4">
-          <p className="text-zinc-400 uppercase tracking-wider text-sm">
+          <p className="dark:text-zinc-400 text-zinc-600 uppercase tracking-wider text-sm">
             Current Timezone Time
           </p>
           <div className="flex flex-col items-center gap-4">
-            <DigitalClockSegment value={timeSegments.date} />
             <div className="flex items-center gap-2">
+              {/* <DigitalClockSegment value={timeSegments.date} /> */}
               <DigitalClockSegment value={timeSegments.time} />
-              <DigitalClockSegment value={timeSegments.timezone} />
+              {/* <DigitalClockSegment value={timeSegments.timezone} /> */}
             </div>
           </div>
         </div>
       </div>
       <div className="space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl font-bold dark:text-white">
             Next Timezones Celebrating New Year's Eve
           </h2>
-          <p className="text-zinc-400">
+          <p className="dark:text-zinc-400 text-zinc-600">
             Stay tuned for celebrations around the world
           </p>
         </div>
       </div>
       <div className="space-y-6">
         <h3 className="text-2xl font-semibold text-red-500">
-          Closest to Midnight ({currentTimezone})
+          Closest to New Year ({currentTimezone})
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {renderCards(closest)}
         </div>
       </div>

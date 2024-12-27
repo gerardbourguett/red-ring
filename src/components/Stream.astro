@@ -10,13 +10,5 @@ const { data, error } = await supabase.from("live").select("*");
 <Layout title=`#${CURRENT_YEAR + 1}Live | Livestreams`>
   <main>
     <StreamGrid events={data ?? []} client:load />
-    <Button
-      color="default"
-      variant="shadow"
-      size="lg"
-      className="text-xl hover:scale-105 transition-transform"
-    >
-      <a href="/">#{CURRENT_YEAR + 1}Live</a>
-    </Button>
   </main>
 </Layout>

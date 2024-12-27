@@ -4,11 +4,13 @@ import NyeEvents from "../components/react/NyeEvents";
 import Layout from "../layouts/Layout.astro";
 import { CURRENT_YEAR } from "../data/constants";
 import { supabase } from "../lib/supabase";
+import Header from "../components/Header.astro";
 
 const { data, error } = await supabase.from("timezones").select("*");
 ---
 
 <Layout title="LIVE">
+  <Header />
   <div class="container mx-auto px-4">
     <h1 class="text-6xl md:text-7xl font-medium tracking-tight text-center">
       #RoadTo<span class="text-red-600">2025</span>
