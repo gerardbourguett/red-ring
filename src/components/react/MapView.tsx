@@ -13,9 +13,13 @@ const MapView = ({ lat = 0, lng = 0 }) => {
     if (!map.current && mapContainer.current) {
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/dark-v11",
+        style: "mapbox://styles/mapbox/navigation-day-v1",
         center: [lng, lat],
-        zoom: 12,
+        zoom: 7,
+        attributionControl: false,
+        logoPosition: "bottom-right",
+        dragPan: false,
+        interactive: false,
       });
 
       if (map.current) {

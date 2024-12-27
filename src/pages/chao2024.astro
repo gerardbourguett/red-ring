@@ -10,16 +10,30 @@ import Footer from "../components/Footer.astro";
 <Layout title="Bye Bye 2024">
   <Header />
   <main class="min-h-screen flex items-center justify-center">
-    <div class="text-center space-y-12 px-4 animate-fade-in">
-      <h1 class="text-6xl md:text-8xl font-medium tracking-tighter">
-        #Chao<span class="text-red-500">{CURRENT_YEAR}</span>
-      </h1>
+    <!-- Add a placeholder for the Twitch embed -->
+    <div class="grid grid-rows-2 gap-4 mb-8">
+      <div id="twitch-embed">
+        <iframe
+          src="https://player.twitch.tv/?channel=vanderfondi&parent=www.nye.today"
+          frameborder="0"
+          allowfullscreen="true"
+          scrolling="no"
+          height="378"
+          width="620"></iframe>
+      </div>
 
-      <div class="max-w-4xl mx-auto">
-        <Countdown client:load />
+      <div class="text-center space-y-12 px-4 animate-fade-in">
+        <h1 class="text-6xl md:text-8xl font-medium tracking-tighter">
+          #Chao<span class="text-red-500">{CURRENT_YEAR}</span>
+        </h1>
+
+        <div class="max-w-4xl mx-auto">
+          <Countdown client:load />
+        </div>
       </div>
     </div>
   </main>
+
   <Footer />
 </Layout>
 
@@ -39,3 +53,13 @@ import Footer from "../components/Footer.astro";
     animation: fadeIn 0.6s ease-out;
   }
 </style>
+
+<!-- Load the Twitch embed script -->
+<script src="https://player.twitch.tv/js/embed/v1.js"></script>
+
+<!-- Create a Twitch.Player object. This will render within the placeholder div -->
+<script type="text/javascript">
+  new Twitch.Player("twitch-embed", {
+    channel: "vanderfondi",
+  });
+</script>
