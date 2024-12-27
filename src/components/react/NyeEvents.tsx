@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import CountryFlag from "react-country-flag";
-import { Badge, Button, Divider, Link } from "@nextui-org/react";
+import { Badge, Button, Divider, Image, Link } from "@nextui-org/react";
 
 interface Event {
   id: number;
@@ -126,41 +126,22 @@ const NyeEvents = ({ events }: Props) => {
 
   const renderCards = (data: Event[]) => {
     return data.map((item, index) => (
-      <Card
-        key={index}
-        className="dark:bg-zinc-900/50 bg-zinc-100/50 border dark:border-zinc-800 border-zinc-200 backdrop-blur-sm dark:hover:bg-zinc-900/80 hover:bg-zinc-100/80 transition-all duration-300"
-      >
-        <CardHeader className="flex justify-center p-6">
-          <CountryFlag
-            countryCode={item.country_code}
-            svg
-            style={{ fontSize: 128 }}
-            title={item.country_name}
-            alt={item.country_name}
+      <Card isFooterBlurred key={index} className="border-none" radius="lg">
+        <div className="relative">
+          <Image
+            alt={`Flag of ${item.country_name}`}
+            src={`/flags/1x1/${item.country_code.toLowerCase()}.svg`}
+            width={380}
+            className="object-cover"
           />
-        </CardHeader>
-        <Divider className="bg-zinc-800" />
-        <CardBody className="text-center">
-          <p className="text-lg font-semibold dark:text-white mb-1 uppercase">
-            {item.country_name}
+        </div>
+        <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
+          <p className="text-sm font-medium text-white">
+            {item.country_name.toUpperCase()}
           </p>
-          <p className="text-zinc-400">{item.city}</p>
-        </CardBody>
-        <CardFooter className="justify-center pb-6">
-          {item.stream && (
-            <Link isExternal href={item.stream}>
-              <Button
-                color="danger"
-                size="sm"
-                variant="shadow"
-                className="hover:scale-105 transition-transform"
-              >
-                <span className="px-2 py-1 text-xs bg-red-500 text-white rounded-full">
-                  LIVE
-                </span>
-              </Button>
-            </Link>
-          )}
+          <p className="text-xs italic text-gray-300 bg-black/30 rounded px-2 py-1">
+            {item.city || "City not available"}
+          </p>
         </CardFooter>
       </Card>
     ));
@@ -174,8 +155,8 @@ const NyeEvents = ({ events }: Props) => {
             Current Timezone Time
           </p>
           <div className="flex flex-col items-center gap-4">
+            <DigitalClockSegment value={timeSegments.date} />
             <div className="flex items-center gap-2">
-              {/* <DigitalClockSegment value={timeSegments.date} /> */}
               <DigitalClockSegment value={timeSegments.time} />
               {/* <DigitalClockSegment value={timeSegments.timezone} /> */}
             </div>

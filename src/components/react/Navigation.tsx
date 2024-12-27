@@ -8,17 +8,26 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Image,
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import ModeToggle from "./ModeToggle";
-import ThemeIcon from "../ThemeIcon.astro";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = ["#RoadTo2025", "LiveStreams", "#Chao2024"];
+  const menuItems = [
+    { label: "#RoadTo2025", href: "/live" },
+    { label: "LiveStreams", href: "/watch" },
+    { label: "#Chao2024", href: "/chao2024" },
+  ];
+
   return (
-    <Navbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      isBordered
+      onMenuOpenChange={setIsMenuOpen}
+      className="bg-transparent"
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -26,26 +35,18 @@ const Navigation = () => {
         />
         <NavbarBrand>
           <Link color="foreground" href="/">
-            Nye.Today
+            <Image alt="logo" src="/brand.svg" width={128} />
           </Link>
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive>
-          <Link color="foreground" href="/live">
-            #RoadTo2025
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="/watch">
-            LiveStreams
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="/chao2024">
-            #Chao2024
-          </Link>
-        </NavbarItem>
+        {menuItems.map(({ label, href }, index) => (
+          <NavbarItem key={index} isActive={index === 0}>
+            <Link color="foreground" href={href}>
+              {label}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
@@ -53,21 +54,15 @@ const Navigation = () => {
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+        {menuItems.map(({ label, href }, index) => (
+          <NavbarMenuItem key={index}>
             <Link
               className="w-full"
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              href="#"
+              color={index === 2 ? "primary" : "foreground"}
+              href={href}
               size="lg"
             >
-              {item}
+              {label}
             </Link>
           </NavbarMenuItem>
         ))}

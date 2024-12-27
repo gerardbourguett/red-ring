@@ -4,6 +4,7 @@ import Countdown from "../components/react/Countdown";
 import Layout from "../layouts/Layout.astro";
 import { CURRENT_YEAR } from "../data/constants";
 import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <Layout title="Bye Bye 2024">
@@ -17,17 +18,9 @@ import Header from "../components/Header.astro";
       <div class="max-w-4xl mx-auto">
         <Countdown client:load />
       </div>
-
-      <Button
-        color="default"
-        variant="shadow"
-        size="lg"
-        className="text-xl hover:scale-105 transition-transform"
-      >
-        <a href="/">#{CURRENT_YEAR + 1}Live</a>
-      </Button>
     </div>
   </main>
+  <Footer />
 </Layout>
 
 <style>
