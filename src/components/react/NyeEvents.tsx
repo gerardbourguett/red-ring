@@ -10,6 +10,7 @@ import {
   Progress,
 } from "@nextui-org/react";
 import { Globe, MapPin } from "lucide-react"; // Faltaba importar los iconos
+import MapView from "./MapView";
 
 interface Event {
   id: number;
@@ -74,6 +75,7 @@ const EventCard = ({ event }: { event: Event }) => {
           src={`/api/placeholder/400/200`}
           className="object-cover rounded-xl h-48 w-full"
         /> */}
+        <MapView lat={event.lat} lng={event.lng} />
       </CardBody>
       <CardFooter className="flex flex-col gap-3">
         <div className="flex items-center justify-between w-full">
