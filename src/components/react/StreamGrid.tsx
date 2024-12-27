@@ -38,7 +38,7 @@ const StreamGrid = ({ events }: Props) => {
           {streams.map((stream) => (
             <div
               key={stream.id}
-              className="relative bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 rounded-2xl overflow-hidden backdrop-blur-sm border border-zinc-800/50 group hover:border-zinc-700/50 transition-all duration-300"
+              className="relative bg-gradient-to-b dark:from-zinc-900/80 dark:to-zinc-950/80 from-zinc-100/80 to-zin-50/80 rounded-2xl overflow-hidden backdrop-blur-sm border dark:border-zinc-800/50 border-zinc-200/50 group dark:hover:border-zinc-700/50 hover:border-zinc-300/50 transition-all duration-300"
             >
               <div className="absolute top-4 right-4 z-10">
                 <span className="px-3 py-1 text-xs font-semibold bg-red-500 text-white rounded-full animate-pulse">
@@ -48,7 +48,7 @@ const StreamGrid = ({ events }: Props) => {
 
               <div className="p-4 pb-0">
                 <div className="space-y-1 mb-4">
-                  <h2 className="text-xl font-semibold text-white flex items-center gap-2">
+                  <h2 className="text-xl font-semibold dark:text-white flex items-center gap-2">
                     {stream.country}
                   </h2>
                   <p className="text-zinc-400 text-sm line-clamp-1">

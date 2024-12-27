@@ -32,9 +32,13 @@ interface Props {
 }
 
 const TimeDisplay = ({ value, label }: { value: string; label: string }) => (
-  <div className="flex flex-col items-center justify-center bg-gradient-to-br from-zinc-900 to-zinc-800 p-3 rounded-xl">
-    <span className="font-mono text-3xl font-bold text-white">{value}</span>
-    <span className="text-xs text-zinc-400 mt-1">{label}</span>
+  <div className="flex flex-col items-center justify-center bg-gradient-to-br dark:from-zinc-900  to-zinc-800 p-3 rounded-xl">
+    <span className="font-mono text-3xl font-bold dark:text-white">
+      {value}
+    </span>
+    <span className="text-xs dark:text-zinc-400 text-zinc-600 mt-1">
+      {label}
+    </span>
   </div>
 );
 
@@ -50,7 +54,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
   return (
     <Card
-      className="border-none bg-gradient-to-br from-zinc-900/50 to-zinc-900"
+      className="border-none bg-gradient-to-br dark:from-zinc-900/50 dark:to-zinc-900 from-zinc-100 to-zinc-100/50"
       radius="lg"
     >
       <CardHeader className="flex gap-3">
@@ -60,10 +64,10 @@ const EventCard = ({ event }: { event: Event }) => {
           className="rounded-full w-12 h-12 object-cover"
         />
         <div className="flex flex-col">
-          <p className="text-lg font-semibold text-white">
+          <p className="text-lg font-semibold dark:text-white">
             {event.country_name}
           </p>
-          <div className="flex items-center gap-2 text-sm text-zinc-400">
+          <div className="flex items-center gap-2 text-sm dark:text-zinc-400 text-zinc-600">
             <Globe className="w-4 h-4" />
             <span>{gmtOffset}</span>
           </div>
@@ -81,11 +85,14 @@ const EventCard = ({ event }: { event: Event }) => {
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
             <MapPin className="w-4 h-4 text-red-500" />
-            <span className="text-sm font-medium text-zinc-300">
+            <span className="text-sm font-medium dark:text-zinc-300 text-zinc-700">
               {event.city || "Capital City"}
             </span>
           </div>
-          <Chip className="bg-gradient-to-r from-red-500 to-red-600" size="sm">
+          <Chip
+            className="bg-gradient-to-r from-red-500 to-red-600 text-white"
+            size="sm"
+          >
             {event.stream ? "Live Now" : "Coming Soon"}
           </Chip>
         </div>
@@ -208,12 +215,12 @@ const NyeEvents = ({ events }: Props) => {
 
   return (
     <div className="space-y-8 p-4 max-w-7xl mx-auto">
-      <div className="bg-gradient-to-br from-zinc-900 to-black p-8 rounded-2xl border border-zinc-800">
+      <div className="bg-gradient-to-br dark:from-zinc-900 dark:to-black from-zinc-100 to-white p-8 rounded-2xl border dark:border-zinc-800 border-zinc-200">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
             New Year's Eve Around the World
           </h1>
-          <p className="text-zinc-400 max-w-2xl mx-auto">
+          <p className="dark:text-zinc-400 text-zinc-600 max-w-2xl mx-auto">
             Follow the New Year celebrations as they happen across different
             time zones
           </p>
@@ -227,7 +234,7 @@ const NyeEvents = ({ events }: Props) => {
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="text-2xl font-semibold dark:text-white">
             Approaching New Year's Eve
           </h2>
           <Progress
@@ -250,7 +257,7 @@ const NyeEvents = ({ events }: Props) => {
 
       <section className="space-y-6">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-semibold text-white">Up Next</h2>
+          <h2 className="text-2xl font-semibold dark:text-white">Up Next</h2>
           <Divider className="flex-grow" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

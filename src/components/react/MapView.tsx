@@ -4,7 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 const MapView = ({ lat = 0, lng = 0 }) => {
   const mapContainer = useRef(null);
-  const map = useRef(null);
+  const map = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
     mapboxgl.accessToken =
@@ -18,7 +18,9 @@ const MapView = ({ lat = 0, lng = 0 }) => {
         zoom: 12,
       });
 
-      new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map.current);
+      if (map.current) {
+        new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map.current);
+      }
     }
 
     return () => {
@@ -29,7 +31,7 @@ const MapView = ({ lat = 0, lng = 0 }) => {
     };
   }, [lat, lng]);
 
-  return <div ref={mapContainer} className="h-48 w-full rounded-xl" />;
+  return <div ref={mapContainer} className="h-48 w-full rounded-xl " />;
 };
 
 export default MapView;
