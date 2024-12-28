@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { Globe, MapPin } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
+import { showNyeToast, ToastContainer } from "./ToastContent";
 
 interface Event {
   id: number;
@@ -117,22 +118,6 @@ const NyeEvents = ({ events }: Props) => {
   const [currentTimezone, setCurrentTimezone] = useState<string>("");
   const [lastNotifiedGroup, setLastNotifiedGroup] = useState<number[]>([]);
 
-  const showNewYearToast = (country_name: string[]) => {
-    const countryText = country_name.join(", ");
-    toast(() => {
-      return (
-        <div className="flex flex-col items-center gap-2 p-4">
-          <span className="text-xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
-            Happy New Year! 🎉
-          </span>
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">
-            It's midnight in {countryText}
-          </span>
-        </div>
-      );
-    });
-  };
-
   useEffect(() => {
     const fetchAndFilterData = async () => {
       const currentUTC = new Date();
@@ -177,13 +162,21 @@ const NyeEvents = ({ events }: Props) => {
       // Check if we need to show a notification
       const closestIds = closestGroup.map((event) => event.id);
       if (
-        closestGroup[0]?.secondsToTarget <= 1 && // Within 1 second of midnight
-        !lastNotifiedGroup.some((id) => closestIds.includes(id)) // Haven't notified for this group yet
+        closestGroup[0]?.secondsToTarget <= 1 &&
+        !lastNotifiedGroup.some((id) => closestIds.includes(id))
       ) {
-        const locations = closestGroup.map(
-          (event) => event.city || event.country_name
-        );
-        showNewYearToast(locations);
+        // Preparar la información para el toast
+        const toastInfo = {
+          countries: closestGroup.map((event) => ({
+            country_name: event.country_name,
+            country_code: event.country_code,
+            city: event.city,
+            gmt_offset: event.gmt_offset,
+          })),
+        };
+
+        // Mostrar el toast global
+        showNyeToast(toastInfo);
         setLastNotifiedGroup(closestIds);
       }
 
@@ -240,7 +233,7 @@ const NyeEvents = ({ events }: Props) => {
 
   return (
     <div className="space-y-8 p-4 max-w-7xl mx-auto">
-      <Toaster position="top-right" />
+      <ToastContainer />
       <div className="bg-gradient-to-br dark:from-zinc-900 dark:to-black from-zinc-100 to-white p-8 rounded-2xl border dark:border-zinc-800 border-zinc-200">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
