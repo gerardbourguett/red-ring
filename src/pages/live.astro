@@ -5,7 +5,10 @@ import { supabase } from "../lib/supabase";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-const { data, error } = await supabase.from("timezones").select("*");
+const { data, error } = await supabase
+  .from("timezones")
+  .select("*")
+  .is("active", true);
 ---
 
 <Layout title="LIVE">

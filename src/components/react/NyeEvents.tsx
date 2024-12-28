@@ -9,7 +9,7 @@ import {
   Link,
   Progress,
 } from "@nextui-org/react";
-import { Globe, MapPin } from "lucide-react"; // Faltaba importar los iconos
+import { Globe, MapPin } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 
 interface Event {
@@ -80,19 +80,21 @@ const EventCard = ({ event }: { event: Event }) => {
               {event.city || "Capital City"}
             </span>
           </div>
-          <Chip
+          {/* <Chip
             className="bg-gradient-to-r from-red-500 to-red-600 text-white"
             size="sm"
           >
             {event.stream ? "Live Now" : "No Stream"}
-          </Chip>
+          </Chip> */}
         </div>
         {event.stream && (
           <Button
             className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white"
             size="sm"
           >
-            Watch Celebration
+            <Link href={event.stream} target="_blank">
+              Watch Live Stream
+            </Link>
           </Button>
         )}
       </CardFooter>
@@ -134,37 +136,34 @@ const NyeEvents = ({ events }: Props) => {
   useEffect(() => {
     const fetchAndFilterData = async () => {
       const currentUTC = new Date();
-      const targetDate = new Date(
-        Date.UTC(
-          currentUTC.getUTCFullYear(),
-          currentUTC.getUTCMonth(),
-          currentUTC.getUTCDate() + 1, // siguiente día
-          0, // 00 horas UTC
-          0, // 00 minutos
-          0, // 00 segundos
-          0 // 00 milisegundos
-        )
-      );
 
+      // Get the current timestamp in seconds
       const currentTimestamp = Math.floor(currentUTC.getTime() / 1000);
 
       const dataWithDifference = events.map((row) => {
+        // Calculate the current local time for this timezone
         const localTimestamp = currentTimestamp + row.gmt_offset;
         const localDate = new Date(localTimestamp * 1000);
 
-        const nextNYE = new Date(targetDate);
-        nextNYE.setSeconds(nextNYE.getSeconds() - row.gmt_offset);
+        // Calculate seconds until next midnight for this timezone
+        const localHours = localDate.getUTCHours();
+        const localMinutes = localDate.getUTCMinutes();
+        const localSeconds = localDate.getUTCSeconds();
 
+        // Calculate seconds remaining until midnight
         let secondsToTarget =
-          Math.floor(nextNYE.getTime() / 1000) - currentTimestamp;
+          24 * 3600 - (localHours * 3600 + localMinutes * 60 + localSeconds);
 
-        if (secondsToTarget < 0) {
-          nextNYE.setFullYear(nextNYE.getFullYear() + 1);
-          secondsToTarget =
-            Math.floor(nextNYE.getTime() / 1000) - currentTimestamp;
+        // If we're exactly at midnight or have just passed it, we want to show it
+        if (secondsToTarget === 24 * 3600) {
+          secondsToTarget = 0;
         }
 
-        return { ...row, secondsToTarget };
+        return {
+          ...row,
+          secondsToTarget,
+          localTime: localDate,
+        };
       });
 
       const sortedData = dataWithDifference.sort(
@@ -210,7 +209,6 @@ const NyeEvents = ({ events }: Props) => {
         const localTimestamp = currentTimestamp + firstItem.gmt_offset;
         const localDate = new Date(localTimestamp * 1000);
 
-        // Formatear las horas, minutos y segundos para el display
         const hours = localDate.getUTCHours().toString().padStart(2, "0");
         const minutes = localDate.getUTCMinutes().toString().padStart(2, "0");
         const seconds = localDate.getUTCSeconds().toString().padStart(2, "0");
