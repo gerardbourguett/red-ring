@@ -9,6 +9,16 @@ const { data, error } = await supabase.from("live").select("*");
 
 <Layout title=`#${CURRENT_YEAR + 1}Live | Livestreams`>
   <main>
+    <div class="container mx-auto px-4 py-8">
+      <h1
+        class="text-5xl md:text-6xl font-bold dark:text-white mb-12 text-center tracking-tight"
+      >
+        Live Streams
+      </h1>
+      <p class="text-lg text-center text-gray-700 dark:text-gray-300">
+        Transmissions will change as midnight approaches in some territories
+      </p>
+    </div>
     <StreamGrid events={data ?? []} client:load />
   </main>
 </Layout>

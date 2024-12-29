@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { TwitterIcon, TwitterShareButton } from "react-share";
+import SocialShare from "./SocialShare";
 
 const TimeProgress = () => {
   const [timeLeft, setTimeLeft] = useState({ progress: 0 });
@@ -43,6 +45,16 @@ const TimeProgress = () => {
       <p className="text-gray-400 mt-2 text-center">
         {year} Progress: {timeLeft.progress.toFixed(5)}%
       </p>
+      <div className="mt-4">
+        <div className="">
+          <SocialShare
+            url="https://nye.today"
+            title={`The year ${year} is ${timeLeft.progress.toFixed(
+              5
+            )}% complete!. Check out the progress at`}
+          />
+        </div>
+      </div>
     </div>
   );
 };

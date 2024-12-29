@@ -28,11 +28,7 @@ const StreamGrid = ({ events }: Props) => {
   }, [events]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-5xl md:text-6xl font-bold dark:text-white mb-12 text-center tracking-tight">
-        Live Streams
-      </h1>
-
+    <div className="">
       {streams.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-screen-xl mx-auto">
           {streams.map((stream) => (

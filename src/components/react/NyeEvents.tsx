@@ -12,6 +12,23 @@ import {
 import { Globe, MapPin } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { showNyeToast, ToastContainer } from "./ToastContent";
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  PocketIcon,
+  PocketShareButton,
+  RedditIcon,
+  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
+import SocialShare from "./SocialShare";
 
 interface Event {
   id: number;
@@ -234,6 +251,10 @@ const NyeEvents = ({ events }: Props) => {
   return (
     <div className="space-y-8 p-4 max-w-7xl mx-auto">
       <ToastContainer />
+      <SocialShare
+        url="https://nye.today/live"
+        title="Follow the New Year celebrations as they happen across different time zones #chao2024 #nye2025 #2025Live"
+      />
       <div className="bg-gradient-to-br dark:from-zinc-900 dark:to-black from-zinc-100 to-white p-8 rounded-2xl border dark:border-zinc-800 border-zinc-200">
         <div className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
