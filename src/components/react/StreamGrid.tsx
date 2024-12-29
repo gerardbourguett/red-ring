@@ -68,7 +68,9 @@ const StreamGrid = ({ events }: Props) => {
       ) : (
         <div className="flex flex-col items-center justify-center min-h-[400px] bg-gradient-to-b from-zinc-900/50 to-zinc-950/50 rounded-2xl border border-zinc-800/50">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-red-500 mb-4" />
-          <p className="text-zinc-400 font-medium">Loading streams...</p>
+          <p className="text-zinc-400 font-medium">
+            Streams available since Dec 31, 2024 10:00 UTC...
+          </p>
         </div>
       )}
     </div>

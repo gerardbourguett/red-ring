@@ -74,7 +74,7 @@ export const showNyeToast = (toastInfo: NyeToastInfo) => {
       </div>
     ),
     {
-      duration: 8000,
+      duration: 60000,
       position: "top-right",
     }
   );

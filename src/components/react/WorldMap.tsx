@@ -78,7 +78,7 @@ const WorldMap = ({ events }: Props) => {
   }, [paths]);
   return (
     <div>
-      <SvgComponent className="xl:w-[1000px] lg:w-[800px] md:w-[600px] sm:w-[400px] w-[200px] h-auto" />
+      <SvgComponent className="xl:w-[1200px] lg:w-[1000px] md:w-[800px] sm:w-[600px] w-[400px] h-auto" />
     </div>
   );
 };

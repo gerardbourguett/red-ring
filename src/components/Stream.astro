@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import { supabase } from "../lib/supabase";
 import StreamGrid from "./react/StreamGrid";
 import { CURRENT_YEAR } from "../data/constants";
+import SocialShare from "./react/SocialShare";
 const { data, error } = await supabase.from("live").select("*");
 ---
 
@@ -18,6 +19,12 @@ const { data, error } = await supabase.from("live").select("*");
       <p class="text-lg text-center text-gray-700 dark:text-gray-300">
         Transmissions will change as midnight approaches in some territories
       </p>
+    </div>
+    <div class="mb-8">
+      <SocialShare
+        url="https://nye.today/watch"
+        title="New Year Eve livestreams around the world"
+      />
     </div>
     <StreamGrid events={data ?? []} client:load />
   </main>
