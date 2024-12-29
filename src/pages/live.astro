@@ -14,10 +14,6 @@ const { data, error } = await supabase
 <Layout title="LIVE">
   <Header />
   <div class="">
-    <!-- <h1 class="text-6xl md:text-7xl font-medium tracking-tight text-center">
-      #RoadTo<span class="text-red-600">2025</span>
-    </h1> -->
-
     <div class="mt-4">
       <NyeEvents events={data ?? []} client:load />
     </div>
