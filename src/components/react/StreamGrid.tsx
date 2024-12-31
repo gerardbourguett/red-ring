@@ -59,6 +59,7 @@ const StreamGrid = ({ events }: Props) => {
                   width="100%"
                   height="100%"
                   playing
+                  controls
                   className="absolute top-0 left-0"
                 />
               </div>
