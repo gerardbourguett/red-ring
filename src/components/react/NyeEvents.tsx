@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Divider, Progress } from "@nextui-org/react";
+import { Divider, Progress, Skeleton } from "@nextui-org/react";
 import { showNyeToast, ToastContainer } from "./ToastContent";
 import SocialShare from "./SocialShare";
 import EventCard from "./EventCard";
@@ -147,7 +147,17 @@ const NyeEvents = ({ events }: Props) => {
   }, [events, lastNotifiedGroup]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="space-y-8 p-4 max-w-7xl mx-auto">
+        <Skeleton className="h-12 w-full" />
+        <Skeleton className="h-8 w-3/4" />
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-8 w-1/4" />
+        <Skeleton className="h-8 w-1/4" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
   }
 
   return (
@@ -159,10 +169,10 @@ const NyeEvents = ({ events }: Props) => {
       />
       <div className="bg-gradient-to-br dark:from-zinc-900 dark:to-black from-zinc-100 to-white p-8 rounded-2xl border dark:border-zinc-800 border-zinc-200">
         <div className="text-center space-y-6">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
             New Year's Eve Around the World
           </h1>
-          <p className="dark:text-zinc-400 text-zinc-600 max-w-2xl mx-auto">
+          <p className="dark:text-zinc-400 text-zinc-600 max-w-xl sm:max-w-2xl mx-auto">
             Follow the New Year celebrations as they happen across different
             time zones
           </p>
@@ -179,7 +189,7 @@ const NyeEvents = ({ events }: Props) => {
 
       <section className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold dark:text-white">
+          <h2 className="text-xl sm:text-2xl font-semibold dark:text-white">
             Approaching New Year's Eve
           </h2>
           <Progress
@@ -190,10 +200,10 @@ const NyeEvents = ({ events }: Props) => {
               indicator: "bg-gradient-to-r from-red-500 to-red-600",
               track: "bg-zinc-800",
             }}
-            className="w-32"
+            className="w-24 sm:w-32"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {closest.map((event, index) => (
             <EventCard key={index} event={event} />
           ))}
@@ -202,10 +212,12 @@ const NyeEvents = ({ events }: Props) => {
 
       <section className="space-y-6">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-semibold dark:text-white">Up Next</h2>
+          <h2 className="text-xl sm:text-2xl font-semibold dark:text-white">
+            Up Next
+          </h2>
           <Divider className="flex-grow" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {nextGroup.map((event, index) => (
             <EventCard key={index} event={event} />
           ))}

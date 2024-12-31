@@ -6,6 +6,7 @@ import {
   CardHeader,
   Image,
   Link,
+  Skeleton,
 } from "@nextui-org/react";
 import { Globe, MapPin } from "lucide-react";
 
@@ -20,6 +21,27 @@ interface Event {
 }
 
 const EventCard = ({ event }: { event: Event }) => {
+  if (!event) {
+    return (
+      <Card className="border-none bg-gradient-to-br dark:from-zinc-900/50 dark:to-zinc-900 from-zinc-100 to-zinc-100/50" radius="lg">
+        <CardHeader className="flex gap-3">
+          <Skeleton className="rounded-full w-12 h-12" />
+          <div className="flex flex-col">
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </CardHeader>
+        <CardBody className="py-0">
+          <Skeleton className="h-64 w-full" />
+        </CardBody>
+        <CardFooter className="flex flex-col gap-3">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-10 w-full" />
+        </CardFooter>
+      </Card>
+    );
+  }
+
   const gmtOffset = `GMT${event.gmt_offset >= 0 ? "+" : ""}${
     event.gmt_offset / 3600
   }`;

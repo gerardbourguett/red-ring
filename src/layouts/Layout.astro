@@ -7,7 +7,10 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -35,7 +38,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
     <div
       class="min-h-screen bg-gradient-to-b from-white to-zinc-100 dark:from-black dark:to-zinc-900 text-zinc-900 dark:text-white antialiased transition-colors duration-300"
     >
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 md:py-8">
         <slot />
         <Analytics />
         <SpeedInsights />
@@ -58,6 +61,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
       background-color: rgb(var(--background));
       scrollbar-gutter: stable;
       color-scheme: dark light;
+      font-size: 16px; /* Base font size for better scaling */
     }
 
     html.dark {
@@ -68,11 +72,23 @@ import SpeedInsights from "@vercel/speed-insights/astro";
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        "Noto Sans",
+        sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     /* Estilos para la barra de desplazamiento */
     ::-webkit-scrollbar {
-      width: 10px;
+      width: 8px;
     }
 
     ::-webkit-scrollbar-track {
@@ -90,9 +106,24 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
     /* Transiciones suaves */
     * {
-      transition-property: background-color, border-color;
+      transition-property: background-color, border-color, color, opacity;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 150ms;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+      html {
+        font-size: 15px; /* Slightly smaller font on smaller screens */
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
     }
   </style>
 
