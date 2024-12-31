@@ -5,18 +5,39 @@ import { supabase } from "../lib/supabase";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-const { data, error } = await supabase
-  .from("timezones")
-  .select("*")
-  .is("active", true);
+const fetchData = async () => {
+  const { data, error } = await supabase
+    .from("timezones")
+    .select("*")
+    .is("active", true);
+  return data;
+};
+
+const events = (await fetchData()) || [];
 ---
 
 <Layout title="LIVE">
   <Header />
   <div class="">
     <div class="mt-4">
-      <NyeEvents events={data ?? []} client:load />
+      <NyeEvents events={events} client:load />
     </div>
   </div>
   <Footer />
 </Layout>
+
+<script>
+  import { supabase } from "../lib/supabase";
+
+  let events = [];
+
+  const fetchData = async () => {
+    const { data, error } = await supabase
+      .from("timezones")
+      .select("*")
+      .is("active", true);
+    events = data || [];
+  };
+
+  setInterval(fetchData, 1000);
+</script>

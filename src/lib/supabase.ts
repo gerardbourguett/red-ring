@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
 export const supabase = createClient(
-  import.meta.env.SUPABASE_URL,
-  import.meta.env.SUPABASE_ANON_KEY,
+  "https://lsbmgjxnaronsbjnyrxk.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxzYm1nanhuYXJvbnNiam55cnhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQxNDkwNjcsImV4cCI6MjAyOTcyNTA2N30.fN-KeGDa--5Nq7DrWIrgOAyFFC39108V6yUTeBpiGVg",
 );
 
 export const mapboxAccessToken = import.meta.env.MAPBOX_TOKEN;
