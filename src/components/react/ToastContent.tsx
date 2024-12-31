@@ -75,14 +75,14 @@ export const showNyeToast = (toastInfo: NyeToastInfo) => {
     ),
     {
       duration: 60000,
-      position: "top-right",
+      position: "top-left",
     }
   );
 };
 
 // Componente contenedor para el sistema de toasts
 export const ToastContainer = () => {
-  return <Toaster position="top-right" />;
+  return <Toaster position="top-left" />;
 };
 
 export default {
